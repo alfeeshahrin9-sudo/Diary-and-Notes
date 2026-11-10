@@ -12,11 +12,13 @@ export function loadData(): AppData {
   try {
     const raw = localStorage.getItem(STORAGE_KEY)
     if (!raw) return { ...defaultData }
-    const parsed = JSON.parse(raw) as AppData
+    const parsed = JSON.parse(raw) as Partial<AppData> | null
+    if (!parsed || typeof parsed !== 'object') return { ...defaultData }
     return {
-      diaryEntries: parsed.diaryEntries ?? [],
-      tasks: parsed.tasks ?? [],
-      lastReminderShown: parsed.lastReminderShown ?? null,
+      diaryEntries: Array.isArray(parsed.diaryEntries) ? parsed.diaryEntries : [],
+      tasks: Array.isArray(parsed.tasks) ? parsed.tasks : [],
+      lastReminderShown:
+        typeof parsed.lastReminderShown === 'string' ? parsed.lastReminderShown : null,
     }
   } catch {
     return { ...defaultData }
@@ -24,5 +26,9 @@ export function loadData(): AppData {
 }
 
 export function saveData(data: AppData): void {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data))
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data))
+  } catch {
+    // Ignore storage quota or private browsing errors
+  }
 }

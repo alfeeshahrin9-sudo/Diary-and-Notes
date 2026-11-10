@@ -53,7 +53,14 @@ export function TaskSection({ tasks, onAdd, onUpdate, onToggle, onDelete }: Task
     setTitle(task.title)
     setNotes(task.notes)
     setDueDate(task.dueDate ?? '')
-    setRemindOn(task.remindOn ?? todayString())
+    setRemindOn(task.remindOn ?? '')
+  }
+
+  const handleDelete = (id: string) => {
+    if (editingId === id) {
+      resetForm()
+    }
+    onDelete(id)
   }
 
   const activeTasks = tasks.filter((t) => !t.completed)
@@ -129,7 +136,7 @@ export function TaskSection({ tasks, onAdd, onUpdate, onToggle, onDelete }: Task
                 task={task}
                 onToggle={onToggle}
                 onEdit={startEdit}
-                onDelete={onDelete}
+                onDelete={handleDelete}
               />
             ))}
           </ul>
@@ -147,7 +154,7 @@ export function TaskSection({ tasks, onAdd, onUpdate, onToggle, onDelete }: Task
                   task={task}
                   onToggle={onToggle}
                   onEdit={startEdit}
-                  onDelete={onDelete}
+                  onDelete={handleDelete}
                 />
               ))}
             </ul>

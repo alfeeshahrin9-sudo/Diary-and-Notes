@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { Header } from './components/Header'
 import { DiarySection } from './components/DiarySection'
 import { TaskSection } from './components/TaskSection'
@@ -20,19 +20,27 @@ function App() {
     dismissReminders,
   } = useStore()
 
+  const [initialReminderIds] = useState<string[]>(() => {
+    const today = todayString()
+    if (data.lastReminderShown === today) return []
+
+    return data.tasks
+      .filter((task) => {
+        if (task.completed) return false
+        const remindToday = task.remindOn ? isDueOrOverdue(task.remindOn) : false
+        const dueToday = task.dueDate ? isDueOrOverdue(task.dueDate) : false
+        return remindToday || dueToday
+      })
+      .map((task) => task.id)
+  })
+
   const reminderTasks = useMemo(() => {
     const today = todayString()
-    const shouldShow = data.lastReminderShown !== today
+    if (data.lastReminderShown === today || initialReminderIds.length === 0) return []
 
-    if (!shouldShow) return []
-
-    return data.tasks.filter((task) => {
-      if (task.completed) return false
-      const remindToday = task.remindOn ? isDueOrOverdue(task.remindOn) : false
-      const dueToday = task.dueDate ? isDueOrOverdue(task.dueDate) : false
-      return remindToday || dueToday
-    })
-  }, [data.tasks, data.lastReminderShown])
+    const idSet = new Set(initialReminderIds)
+    return data.tasks.filter((task) => idSet.has(task.id))
+  }, [data.tasks, data.lastReminderShown, initialReminderIds])
 
   const showReminders = reminderTasks.length > 0
 

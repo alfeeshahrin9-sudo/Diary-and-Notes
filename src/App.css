@@ -110,7 +110,8 @@
   font-size: 0.8rem;
 }
 
-.board-label {
+.board-label,
+.app-header__tag {
   display: inline-block;
   font-family: var(--font-display);
   font-size: 0.45rem;
@@ -123,7 +124,8 @@
   padding: 0.35rem 0.5rem;
 }
 
-.board-label--accent {
+.board-label--accent,
+.app-header__tag {
   color: var(--accent);
   background: var(--accent-light);
   border-color: var(--accent-border);
@@ -370,7 +372,8 @@
   color: var(--text-h);
 }
 
-.entry-card--completed .task-check__title {
+.entry-card--completed .task-check__title,
+.entry-card--completed .reminder-item__title {
   text-decoration: line-through;
   color: var(--text-muted);
 }
