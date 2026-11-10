@@ -4,8 +4,8 @@ A personal diary and task tracker that runs in your browser. Data is stored loca
 
 ## Features
 
-- **Diary** — write dated journal entries
-- **Tasks** — manage to-dos with due dates and reminder dates
+- **Diary** — write dated journal entries with optional mood tracking (`Great`, `Good`, `Okay`, `Tired`, `Stressed`), search, and mood filters
+- **Tasks** — manage to-dos with due dates, reminder dates, priority levels (`Low`, `Medium`, `High`), search/filtering, and one-click clearing of completed tasks
 - **On-open reminders** — when you open the app each day, a popup shows tasks that are due or have a reminder set for today
 
 ## Getting started

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { loadData, saveData } from '../storage'
-import type { AppData, DiaryEntry, Task } from '../types'
+import type { AppData, DiaryEntry, DiaryMood, Task, TaskPriority } from '../types'
 import { todayString } from '../utils/dates'
 
 function createId(): string {
@@ -14,32 +14,39 @@ export function useStore() {
     saveData(data)
   }, [data])
 
-  const addDiaryEntry = useCallback((title: string, content: string, date: string) => {
-    const now = new Date().toISOString()
-    const entry: DiaryEntry = {
-      id: createId(),
-      title,
-      content,
-      date,
-      createdAt: now,
-      updatedAt: now,
-    }
-    setData((prev) => ({
-      ...prev,
-      diaryEntries: [entry, ...prev.diaryEntries],
-    }))
-  }, [])
+  const addDiaryEntry = useCallback(
+    (title: string, content: string, date: string, mood?: DiaryMood) => {
+      const now = new Date().toISOString()
+      const entry: DiaryEntry = {
+        id: createId(),
+        title,
+        content,
+        date,
+        mood,
+        createdAt: now,
+        updatedAt: now,
+      }
+      setData((prev) => ({
+        ...prev,
+        diaryEntries: [entry, ...prev.diaryEntries],
+      }))
+    },
+    [],
+  )
 
-  const updateDiaryEntry = useCallback((id: string, title: string, content: string, date: string) => {
-    setData((prev) => ({
-      ...prev,
-      diaryEntries: prev.diaryEntries.map((entry) =>
-        entry.id === id
-          ? { ...entry, title, content, date, updatedAt: new Date().toISOString() }
-          : entry,
-      ),
-    }))
-  }, [])
+  const updateDiaryEntry = useCallback(
+    (id: string, title: string, content: string, date: string, mood?: DiaryMood) => {
+      setData((prev) => ({
+        ...prev,
+        diaryEntries: prev.diaryEntries.map((entry) =>
+          entry.id === id
+            ? { ...entry, title, content, date, mood, updatedAt: new Date().toISOString() }
+            : entry,
+        ),
+      }))
+    },
+    [],
+  )
 
   const deleteDiaryEntry = useCallback((id: string) => {
     setData((prev) => ({
@@ -49,7 +56,13 @@ export function useStore() {
   }, [])
 
   const addTask = useCallback(
-    (title: string, notes: string, dueDate: string | null, remindOn: string | null) => {
+    (
+      title: string,
+      notes: string,
+      dueDate: string | null,
+      remindOn: string | null,
+      priority: TaskPriority = 'medium',
+    ) => {
       const now = new Date().toISOString()
       const task: Task = {
         id: createId(),
@@ -57,6 +70,7 @@ export function useStore() {
         notes,
         dueDate,
         remindOn,
+        priority,
         completed: false,
         createdAt: now,
         updatedAt: now,
@@ -76,6 +90,7 @@ export function useStore() {
       notes: string,
       dueDate: string | null,
       remindOn: string | null,
+      priority: TaskPriority = 'medium',
     ) => {
       setData((prev) => ({
         ...prev,
@@ -87,6 +102,7 @@ export function useStore() {
                 notes,
                 dueDate,
                 remindOn,
+                priority,
                 updatedAt: new Date().toISOString(),
               }
             : task,
@@ -114,6 +130,13 @@ export function useStore() {
     }))
   }, [])
 
+  const clearCompletedTasks = useCallback(() => {
+    setData((prev) => ({
+      ...prev,
+      tasks: prev.tasks.filter((task) => !task.completed),
+    }))
+  }, [])
+
   const dismissReminders = useCallback(() => {
     setData((prev) => ({
       ...prev,
@@ -130,6 +153,7 @@ export function useStore() {
     updateTask,
     toggleTask,
     deleteTask,
+    clearCompletedTasks,
     dismissReminders,
   }
 }
