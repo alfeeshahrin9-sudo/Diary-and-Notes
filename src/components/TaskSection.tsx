@@ -78,8 +78,22 @@ export function TaskSection({
     setTitle(task.title)
     setNotes(task.notes)
     setDueDate(task.dueDate ?? '')
-    setRemindOn(task.remindOn ?? todayString())
+    setRemindOn(task.remindOn ?? '')
     setPriority(task.priority ?? 'medium')
+  }
+
+  const handleDelete = (id: string) => {
+    if (editingId === id) {
+      resetForm()
+    }
+    onDelete(id)
+  }
+
+  const handleClearCompleted = () => {
+    if (editingId && tasks.some((t) => t.id === editingId && t.completed)) {
+      resetForm()
+    }
+    onClearCompleted()
   }
 
   const filteredTasks = useMemo(() => {
@@ -215,7 +229,7 @@ export function TaskSection({
                 task={task}
                 onToggle={onToggle}
                 onEdit={startEdit}
-                onDelete={onDelete}
+                onDelete={handleDelete}
               />
             ))}
           </ul>
@@ -230,7 +244,7 @@ export function TaskSection({
               <button
                 type="button"
                 className="btn btn--small btn--ghost"
-                onClick={onClearCompleted}
+                onClick={handleClearCompleted}
               >
                 Clear completed
               </button>
@@ -242,7 +256,7 @@ export function TaskSection({
                   task={task}
                   onToggle={onToggle}
                   onEdit={startEdit}
-                  onDelete={onDelete}
+                  onDelete={handleDelete}
                 />
               ))}
             </ul>

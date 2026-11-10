@@ -30,11 +30,13 @@ export function DiarySection({ entries, onAdd, onUpdate, onDelete }: DiarySectio
     e.preventDefault()
     if (!title.trim()) return
 
+    const entryDate = date || todayString()
+
     if (editingId) {
-      onUpdate(editingId, title.trim(), content.trim(), date, mood)
+      onUpdate(editingId, title.trim(), content.trim(), entryDate, mood)
       setEditingId(null)
     } else {
-      onAdd(title.trim(), content.trim(), date, mood)
+      onAdd(title.trim(), content.trim(), entryDate, mood)
     }
 
     setTitle('')
@@ -57,6 +59,13 @@ export function DiarySection({ entries, onAdd, onUpdate, onDelete }: DiarySectio
     setContent('')
     setDate(todayString())
     setMood(undefined)
+  }
+
+  const handleDelete = (id: string) => {
+    if (editingId === id) {
+      cancelEdit()
+    }
+    onDelete(id)
   }
 
   const filteredEntries = useMemo(() => {
@@ -190,7 +199,7 @@ export function DiarySection({ entries, onAdd, onUpdate, onDelete }: DiarySectio
                 <button
                   type="button"
                   className="btn btn--small btn--danger"
-                  onClick={() => onDelete(entry.id)}
+                  onClick={() => handleDelete(entry.id)}
                 >
                   Delete
                 </button>

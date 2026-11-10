@@ -21,7 +21,10 @@ export function ReminderModal({ tasks, onDismiss, onToggle }: ReminderModalProps
 
         <ul className="reminder-list">
           {tasks.map((task) => (
-            <li key={task.id} className="reminder-item">
+            <li
+              key={task.id}
+              className={`reminder-item ${task.completed ? 'entry-card--completed' : ''}`}
+            >
               <label className="reminder-item__check">
                 <input
                   type="checkbox"
