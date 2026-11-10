@@ -182,6 +182,62 @@
   box-shadow: var(--accent-glow);
 }
 
+.input--small {
+  padding: 0.45rem 0.65rem;
+  font-size: 0.8rem;
+}
+
+.filter-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.pill-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.pill {
+  padding: 0.3rem 0.6rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  transition: background 0.15s, border-color 0.15s, color 0.15s, box-shadow 0.15s;
+}
+
+.pill:hover {
+  color: var(--text-h);
+  border-color: var(--accent-border);
+}
+
+.pill--active {
+  background: var(--accent-light);
+  border-color: var(--accent);
+  color: var(--accent);
+  text-shadow: var(--accent-glow);
+  box-shadow: var(--accent-glow);
+}
+
+.board-card--diary .pill--active {
+  background: var(--diary-bg);
+  border-color: var(--diary-accent);
+  color: var(--diary-accent);
+  text-shadow: var(--diary-glow);
+  box-shadow: var(--diary-glow);
+}
+
+.board-card--tasks .pill--active {
+  background: var(--task-bg);
+  border-color: var(--task-accent);
+  color: var(--task-accent);
+  text-shadow: var(--task-glow);
+  box-shadow: var(--task-glow);
+}
+
 .textarea {
   resize: vertical;
   min-height: 80px;
@@ -330,6 +386,17 @@
   gap: 1.25rem;
 }
 
+.task-group__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.task-group__header .task-group__title {
+  margin-bottom: 0;
+}
+
 .task-group__title {
   font-family: var(--font-display);
   font-size: 0.5rem;
@@ -410,6 +477,39 @@
   background: var(--danger-bg);
   color: var(--overdue);
   border-color: rgba(255, 56, 100, 0.4);
+  box-shadow: 0 0 8px rgba(255, 56, 100, 0.25);
+}
+
+.chip--mood {
+  background: var(--diary-bg);
+  color: var(--diary-accent);
+  border-color: rgba(0, 245, 255, 0.4);
+  text-shadow: var(--diary-glow);
+}
+
+.chip--mood-stressed {
+  background: var(--danger-bg);
+  color: var(--overdue);
+  border-color: rgba(255, 56, 100, 0.4);
+  text-shadow: none;
+}
+
+.chip--priority-low {
+  background: rgba(110, 110, 154, 0.18);
+  color: var(--text);
+  border-color: var(--border);
+}
+
+.chip--priority-medium {
+  background: var(--diary-bg);
+  color: var(--diary-accent);
+  border-color: rgba(0, 245, 255, 0.35);
+}
+
+.chip--priority-high {
+  background: var(--danger-bg);
+  color: var(--overdue);
+  border-color: rgba(255, 56, 100, 0.5);
   box-shadow: 0 0 8px rgba(255, 56, 100, 0.25);
 }
 

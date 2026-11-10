@@ -17,6 +17,7 @@ function App() {
     updateTask,
     toggleTask,
     deleteTask,
+    clearCompletedTasks,
     dismissReminders,
   } = useStore()
 
@@ -61,6 +62,7 @@ function App() {
           onUpdate={updateTask}
           onToggle={toggleTask}
           onDelete={deleteTask}
+          onClearCompleted={clearCompletedTasks}
         />
       </main>
 
